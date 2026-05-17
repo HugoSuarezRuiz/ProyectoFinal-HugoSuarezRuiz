@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ProyectoFinal01</string>
+    <string name="title_activity_iniciador_sesion">IniciadorSesion</string>
+    <string name="title_activity_sing_in">SingInActivity</string>
+</resources>
