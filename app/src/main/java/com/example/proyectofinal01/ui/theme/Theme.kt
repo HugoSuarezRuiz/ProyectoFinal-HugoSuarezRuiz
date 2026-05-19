@@ -9,25 +9,35 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = MarronClaro,
+    secondary = MarronClaro,
+    tertiary = Beige,
+    background = Marron,
+    surface = Marron,
+    onPrimary = Color.White,
+    onBackground = Beige,
+    onSurface = Beige
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
+    primary = Marron,
+    secondary = MarronClaro,
+    tertiary = Cafe,
+    background = Beige,
+    surface = Beige,
+    onPrimary = Color.White,
+    onSecondary = Color.White,
+    onBackground = Marron,
+    onSurface = Marron
 )
 
 @Composable
 fun ProyectoFinal01Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

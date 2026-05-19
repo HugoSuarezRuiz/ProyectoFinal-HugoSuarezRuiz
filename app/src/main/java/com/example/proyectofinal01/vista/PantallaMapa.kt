@@ -38,10 +38,8 @@ fun PantallaMapa(){
     }
 
     val clienteLugares = remember { Places.createClient(contexto) }
-
     //Coordenadas donde empieza centrado el mapa, en este caso Granada
     val centroMapa = LatLng(37.178, -3.598)
-    
     //Variable que va guardando donde va moviendo la cámara el usuario
     val estadoCamara = rememberCameraPositionState{
         position = CameraPosition.fromLatLngZoom(centroMapa, 6f)

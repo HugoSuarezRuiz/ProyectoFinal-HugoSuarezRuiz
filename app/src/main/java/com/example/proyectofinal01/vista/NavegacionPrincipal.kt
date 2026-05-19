@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
  */
 @Composable
 fun NavegacionPrincipal(alCerrarSesion: () -> Unit){
-    // pestanaActual: Guarda qué botón del menú está seleccionado y empieza en el 2 que es el diario
+    //Guarda qué esta seleccionado en el menú y empieza en el 2 que es el diario
     var pestanaActual by remember { mutableStateOf(2) }
 
     Scaffold(

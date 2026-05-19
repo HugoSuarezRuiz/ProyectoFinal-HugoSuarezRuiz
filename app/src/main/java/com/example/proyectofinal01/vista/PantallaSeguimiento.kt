@@ -142,7 +142,7 @@ fun ResumenDiario(
 
         LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)){
             if(listaAlimentos.isEmpty()){
-                item { Text("No hay registros para este día.", color = Color.Gray, modifier = Modifier.padding(top = 16.dp)) }
+                item { Text("No hay registros de este día.", color = Color.Gray, modifier = Modifier.padding(top = 16.dp)) }
             }else{
                 items(listaAlimentos){ alimento ->
                     Row(
@@ -186,7 +186,7 @@ fun ResumenDiario(
 
             if(macroTotalReal > 0){
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Distribución de Macros", fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.Start))
+                Text("Macros", fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterHorizontally))
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth().height(24.dp).clip(CircleShape)){
                     if(pctProtes > 0){
@@ -303,13 +303,12 @@ fun AñadirAlimento(fechaSeleccionada: String, alVolver: () -> Unit){
                             grasas = if (mostrarMacros) grasas.toDoubleOrNull() ?: 0.0 else 0.0
                         )
 
-                        //Se guarda el añimento añadido a la base de datos de el usuario conectado
+                        // Se guarda el alimento en la base de datos (se guarda localmente si no hay conexión y se sincronizará después)
                         baseDatos.collection("usuarios").document(usuario.uid)
                             .collection("alimentos_diarios").add(nuevoAlimento)
-                            .addOnSuccessListener{
-                                android.widget.Toast.makeText(contexto, "Añadido", android.widget.Toast.LENGTH_SHORT).show()
-                                alVolver()
-                            }
+                        
+                        android.widget.Toast.makeText(contexto, "Añadido", android.widget.Toast.LENGTH_SHORT).show()
+                        alVolver()
                     }
                 }else{
                     android.widget.Toast.makeText(contexto, "Datos inválidos", android.widget.Toast.LENGTH_SHORT).show()

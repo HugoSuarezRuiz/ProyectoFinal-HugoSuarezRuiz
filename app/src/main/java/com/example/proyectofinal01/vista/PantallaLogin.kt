@@ -3,13 +3,19 @@ package com.example.proyectofinal01.vista
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.proyectofinal01.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -49,27 +55,53 @@ fun PantallaLogin(alIniciarSesion: (FirebaseUser?) -> Unit){
     }
 
 
-
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo CapiLorias",
+            modifier = Modifier
+                .size(280.dp)
+                .padding(bottom = 24.dp)
+        )
+        
         Row(
-            modifier = Modifier.padding(bottom = 6.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Capi",
+                fontSize = 56.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                text = "Lorias",
+                fontSize = 56.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+            )
+        }
+        Spacer(modifier = Modifier.height(48.dp))
+        Button(
+            onClick = {
+                val opcionesGoogle = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(tokenGoogle)
+                    .requestEmail()
+                    .build()
+                val clienteGoogle = GoogleSignIn.getClient(contexto, opcionesGoogle)
+                lanzador.launch(clienteGoogle.signInIntent)
+            },
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .width(200.dp)
+                .height(48.dp)
         ){
-            Text("Inicia sesión para ver tu seguimiento")
+            Text("Iniciar sesión")
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
-            val opcionesGoogle = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(tokenGoogle)
-                .requestEmail()
-                .build()
-            val clienteGoogle = GoogleSignIn.getClient(contexto, opcionesGoogle)
-            lanzador.launch(clienteGoogle.signInIntent)
-        }){
-            Text("Iniciar sesión con Google")
-        }
+        Spacer(modifier = Modifier.height(100.dp))
     }
 }

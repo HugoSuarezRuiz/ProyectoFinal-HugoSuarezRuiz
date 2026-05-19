@@ -101,7 +101,7 @@ fun PantallaCuenta(alCerrarSesion: () -> Unit){
                 }
         )
         if(estaEditando){
-            Text("Toca la foto para cambiarla", fontSize = 12.sp, color = Color.Gray, modifier = Modifier.padding(top = 4.dp))
+            Text("Dale a la foto para cambiarla", fontSize = 12.sp, color = Color.Gray, modifier = Modifier.padding(top = 4.dp))
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -125,7 +125,7 @@ fun PantallaCuenta(alCerrarSesion: () -> Unit){
                     baseDatos.collection("usuarios").document(usuario.uid).set(datos, SetOptions.merge())
                 }
             }){
-                Text("Guardar Cambios")
+                Text("Guardar")
             }
         }else{
             Text(text = nombreFinal, fontSize = 24.sp, fontWeight = FontWeight.Bold)
@@ -133,7 +133,7 @@ fun PantallaCuenta(alCerrarSesion: () -> Unit){
 
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedButton(onClick = {estaEditando = true }){
-                Text("Editar Perfil")
+                Text("Editar perfil")
             }
         }
 

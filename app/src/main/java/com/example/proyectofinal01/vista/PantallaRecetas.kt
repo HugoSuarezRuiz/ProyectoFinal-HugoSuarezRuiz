@@ -45,7 +45,7 @@ fun PantallaRecetas(){
         LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)){
             item{
                 Text("Recetas Saludables", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 8.dp))
-                Text("Descubre platos para tu dieta", color = Color.Gray, modifier = Modifier.padding(bottom = 16.dp))
+                Text("Platos para tu día a día", color = Color.Gray, modifier = Modifier.padding(bottom = 16.dp))
             }
             items(baseDeRecetas){ receta ->
                 ElementoReceta(receta = receta, alVerCompleta = { recetaSeleccionada = receta })
@@ -102,7 +102,7 @@ fun ElementoReceta(receta: Receta, alVerCompleta: () -> Unit){
                         onClick = alVerCompleta,
                         modifier = Modifier.fillMaxWidth()
                     ){
-                        Text("Ver paso a paso >>")
+                        Text("Ver pasos")
                     }
                 }
             }
@@ -154,14 +154,14 @@ fun DetalleReceta(receta: Receta, alVolver: () -> Unit){
             Text("Ingredientes", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
             Spacer(modifier = Modifier.height(8.dp))
             receta.ingredientes.forEach { ingrediente ->
-                Row(modifier = Modifier.padding(vertical = 4.dp)) {
+                Row(modifier = Modifier.padding(vertical = 4.dp)){
                     Text("•", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 8.dp))
                     Text(ingrediente)
                 }
             }
             
             Spacer(modifier = Modifier.height(24.dp))
-            Text("Pasos a seguir", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+            Text("Pasos", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
             Spacer(modifier = Modifier.height(8.dp))
             receta.pasos.forEachIndexed { indice, paso ->
                 Row(modifier = Modifier.padding(vertical = 6.dp)){
