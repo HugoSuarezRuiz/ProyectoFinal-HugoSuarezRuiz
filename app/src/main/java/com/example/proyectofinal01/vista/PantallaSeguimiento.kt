@@ -73,8 +73,8 @@ fun ResumenDiario(
     val contexto = LocalContext.current
     val usuario = FirebaseAuth.getInstance().currentUser
     val baseDatos = FirebaseFirestore.getInstance()
-    //Variable donde se guardan los alimentos registrados en la base de datos
     var listaAlimentos by remember { mutableStateOf(emptyList<Alimento>()) }
+    var objetivoCalorias by remember { mutableStateOf(0) }
     val caloriasTotales = listaAlimentos.sumOf { it.calorias }
     val calendario = Calendar.getInstance()
     //El calendario que sale para elegir una fecha
@@ -91,7 +91,20 @@ fun ResumenDiario(
         calendario.get(Calendar.DAY_OF_MONTH)
     )
 
-    //Esto esta atento de si se cambia el día o añade/borra algo y al hacerlo consulta a la base de datos o guarda los cambios
+    LaunchedEffect(usuario){
+        if(usuario != null){
+            baseDatos.collection("usuarios").document(usuario.uid)
+                .addSnapshotListener { snapshot, error ->
+                    if (error == null && snapshot != null && snapshot.exists()) {
+                        val obj = snapshot.getString("objetivoCalorias")
+                        if (!obj.isNullOrEmpty()) {
+                            objetivoCalorias = obj.toIntOrNull() ?: 0
+                        }
+                    }
+                }
+        }
+    }
+
     LaunchedEffect(usuario, fechaBD){
         if(usuario != null){
             baseDatos.collection("usuarios")
@@ -126,6 +139,18 @@ fun ResumenDiario(
 
         Text("Calorías Consumidas", fontSize = 16.sp, color = Color.Gray)
         Text("$caloriasTotales kcal", fontSize = 48.sp, fontWeight = FontWeight.ExtraBold)
+
+        if(objetivoCalorias > 0){
+            val caloriasRestantes = objetivoCalorias - caloriasTotales
+            Spacer(modifier = Modifier.height(8.dp))
+            if(caloriasRestantes >= 0){
+                Text("Objetivo: $objetivoCalorias kcal", color = Color.Gray, fontSize = 16.sp)
+                Text("Te quedan: $caloriasRestantes kcal", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            }else{
+                Text("Objetivo: $objetivoCalorias kcal", color = Color.Gray, fontSize = 16.sp)
+                Text("Te has pasado por: ${-caloriasRestantes} kcal", color = MaterialTheme.colorScheme.error, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            }
+        }
 
         Spacer(modifier = Modifier.height(32.dp))
 

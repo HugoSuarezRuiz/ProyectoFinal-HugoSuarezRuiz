@@ -37,7 +37,9 @@ fun PantallaCuenta(alCerrarSesion: () -> Unit){
     var nombrePersonalizado by remember { mutableStateOf(usuario?.displayName ?: "") }
     var uriFotoPerfil by remember { mutableStateOf<Uri?>(null) }
     var estaEditando by remember { mutableStateOf(false) } //Para saber si se esta en modo edición
+    var estaEditandoCalorias by remember { mutableStateOf(false) } // Para modo edición de calorías
     var datosCargados by remember { mutableStateOf(false) }
+    var objetivoCalorias by remember { mutableStateOf("") }
 
     //Busca en firestore los datos del usuario y los guarda en las variables
     LaunchedEffect(usuario){
@@ -48,7 +50,9 @@ fun PantallaCuenta(alCerrarSesion: () -> Unit){
                     if(doc.exists()){
                         val nom = doc.getString("nombrePersonalizado")
                         val pic = doc.getString("fotoString")
+                        val objCal = doc.getString("objetivoCalorias")
                         if(!nom.isNullOrEmpty()) nombrePersonalizado = nom
+                        if(!objCal.isNullOrEmpty()) objetivoCalorias = objCal
                         if(!pic.isNullOrEmpty()){
                             try{
                                 uriFotoPerfil = Uri.parse(pic)
@@ -134,6 +138,39 @@ fun PantallaCuenta(alCerrarSesion: () -> Unit){
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedButton(onClick = {estaEditando = true }){
                 Text("Editar perfil")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if(estaEditandoCalorias){
+            OutlinedTextField(
+                value = objetivoCalorias,
+                onValueChange = { newValue ->
+                    if (newValue.isEmpty() || newValue.all { it.isDigit() }) {
+                        objetivoCalorias = newValue
+                    }
+                },
+                label = { Text("Objetivo calorías diarias") },
+                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
+                )
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = {
+                estaEditandoCalorias = false
+                if(usuario != null){
+                    val datos = hashMapOf<String, Any>(
+                        "objetivoCalorias" to objetivoCalorias
+                    )
+                    baseDatos.collection("usuarios").document(usuario.uid).set(datos, SetOptions.merge())
+                }
+            }){
+                Text("Guardar")
+            }
+        }else{
+            OutlinedButton(onClick = { estaEditandoCalorias = true }){
+                Text("Poner objetivo calorías")
             }
         }
 
